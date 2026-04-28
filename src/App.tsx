@@ -36,6 +36,9 @@ import { AdminImportExportTab } from './components/AdminImportExportTab';
 import { AdminBackendTab } from './components/AdminBackendTab';
 import { ImageFallback, dicebearAvatar } from './components/ImageFallback';
 import { CacheHealthTab } from './components/CacheHealthTab';
+import { FloatingActionContainer } from './components/ui/FloatingActionContainer';
+import { ScrollToTop } from './components/ui/ScrollToTop';
+import { PwaDownloadPrompt } from './components/ui/PwaDownloadPrompt';
 import { 
   Trophy, ArrowLeft, Plus, CheckCircle2, Circle, Medal, Award, Flame, 
   Settings, Search, Edit, Trash2, X, ChevronDown, ChevronUp, Users, 
@@ -167,7 +170,7 @@ export default function App() {
                 </div>
               )}
               <span className="font-bold text-xl tracking-tight text-foreground">
-                {appSettings.appName || 'Tiny Tree'}
+                {appSettings.appName || 'PPMH'}
               </span>
             </div>
             
@@ -269,9 +272,14 @@ export default function App() {
         </ErrorBoundary>
       </main>
 
-      <button onClick={toggleTheme} className="fixed bottom-24 right-4 md:hidden p-3 bg-secondary border border-border text-foreground transition-colors shadow-soft rounded-full z-50">
-        {themeMode === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-      </button>
+      <FloatingActionContainer>
+        <button onClick={toggleTheme} className="md:hidden p-3 bg-secondary border border-border text-foreground transition-colors shadow-soft rounded-full z-50">
+          {themeMode === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
+        <ScrollToTop />
+      </FloatingActionContainer>
+      
+      <PwaDownloadPrompt />
 
       {/* Bottom Mobile Nav */}
       <nav className="fixed bottom-0 left-0 right-0 bg-background border-t border-border px-8 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] flex justify-between items-center md:hidden z-50">

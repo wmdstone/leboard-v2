@@ -18,7 +18,9 @@ import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/ui/DataTable';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { SimpleMenu } from '../ui/SimpleMenu';
+import { ArrowUpDown } from 'lucide-react';
 
 export function AdminStudentsTab({ students, refreshData, masterGoals, categories, calculateTotalPoints }: any) {
   const [searchFilter, setSearchFilter] = useState<StudentSearchFilterValue>(emptyStudentSearchFilter);
@@ -80,10 +82,55 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
     refreshData();
   };
 
+  const handleBulkDelete = async (ids: string[]) => {
+    if (!window.confirm(`Are you sure you want to delete ${ids.length} students? This cannot be undone.`)) return;
+    try {
+      await Promise.all(ids.map(id => apiFetch(`/api/students/${id}`, { method: 'DELETE' })));
+      refreshData();
+    } catch (err: any) {
+      alert('Failed to delete some students: ' + err.message);
+    }
+  };
+
   const columns: ColumnDef<any>[] = [
     {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className="rounded border-border text-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground focus-visible:ring-primary h-4 w-4"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="rounded border-border text-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground focus-visible:ring-primary h-4 w-4"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
       accessorKey: "name",
-      header: "Student",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="hover:bg-transparent px-0 font-medium text-muted-foreground"
+          >
+            Student
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
       cell: ({ row }) => {
         const student = row.original;
         return (
@@ -186,7 +233,13 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
         />
       </div>
 
-      <DataTable columns={columns} data={filtered} />
+      <DataTable 
+        columns={columns} 
+        data={filtered} 
+        filterColumn="name" 
+        filterPlaceholder="Filter students..." 
+        onDeleteSelected={handleBulkDelete}
+      />
 
       {modalOpen && (
         <StudentAdminModal 
