@@ -224,11 +224,7 @@ function LeaderboardPage({ students, masterGoals, calculateTotalPoints, navigate
   return (
     <div className="space-y-6 pb-24 md:space-y-8">
       {/* HEADER & PODIUM */}
-      <div className="bg-card pt-8 px-4 rounded-b-xl md:rounded-xl text-foreground shadow-soft border border-border relative overflow-hidden -mx-4 -mt-6 sm:mx-0 sm:mt-0">
-        <div className="absolute top-0 right-0 opacity-10 transform translate-x-1/4 -translate-y-1/4 rotate-12 pointer-events-none">
-          {appSettings?.logoUrl ? <ImageFallback src={appSettings.logoUrl} alt="" variant="logo" className="w-64 h-64 grayscale" wrapperClassName="w-64 h-64" /> : <Trophy className="w-64 h-64" />}
-        </div>
-        
+      <div className="pt-8 px-4 text-foreground relative overflow-hidden -mx-4 -mt-6 sm:mx-0 sm:mt-0">
         <div className="relative z-10 space-y-4 max-w-2xl mx-auto mb-6 text-center">
           <Badge variant="secondary" className="px-3 py-1 text-xs font-bold uppercase tracking-widest gap-2 bg-secondary/50 backdrop-blur-sm border-transparent text-primary hover:bg-secondary/60">
             <Flame className="w-3 h-3 text-destructive" /> {appSettings?.badgeTitle || 'Season 2 Active'}
@@ -268,32 +264,31 @@ function LeaderboardPage({ students, masterGoals, calculateTotalPoints, navigate
       </div>
 
       {/* REST OF STUDENTS LIST */}
-      <div className="mx-0 max-w-5xl mx-auto">
-        <Card className="rounded-xl shadow-none bg-transparent border-none">
-          <CardHeader className="px-0 pt-0 pb-4">
-            <StudentSearchAdvanced
-              value={searchFilter}
-              onChange={setSearchFilter}
-              sortKey={sortKey}
-              onSortChange={setSortKey}
-              availableTags={availableTags}
-              studentTagSource={studentTagSource}
-              placeholder="Search rank 4 and below..."
-            />
-          </CardHeader>
-          <CardContent className="px-0">
-            {isLoading ? (
-              <div className="p-20 flex flex-col items-center gap-4 bg-card rounded-xl border border-border shadow-soft">
-                <Loader2 className="w-8 h-8 text-primary animate-spin" />
-                <p className="text-muted-foreground text-sm font-medium">Fetching leaderboard data...</p>
-              </div>
-            ) : restOfStudents.length === 0 ? (
-              <div className="p-12 text-center text-muted-foreground bg-card rounded-xl border border-border shadow-soft">
-                <p className="font-bold">
-                  {hasActiveFilter ? 'No students match your search or tag filter.' : 'No other students found.'}
-                </p>
-              </div>
-            ) : (
+      <div className="mx-0 max-w-5xl mx-auto space-y-4">
+        <div className="px-0 pt-0 pb-4">
+          <StudentSearchAdvanced
+            value={searchFilter}
+            onChange={setSearchFilter}
+            sortKey={sortKey}
+            onSortChange={setSortKey}
+            availableTags={availableTags}
+            studentTagSource={studentTagSource}
+            placeholder="Search rank 4 and below..."
+          />
+        </div>
+        <div className="px-0">
+          {isLoading ? (
+            <div className="p-20 flex flex-col items-center gap-4 bg-card rounded-xl border-none shadow-inner">
+              <Loader2 className="w-8 h-8 text-primary animate-spin" />
+              <p className="text-muted-foreground text-sm font-medium">Fetching leaderboard data...</p>
+            </div>
+          ) : restOfStudents.length === 0 ? (
+            <div className="p-12 text-center text-muted-foreground bg-card rounded-xl border-none shadow-inner">
+              <p className="font-bold">
+                {hasActiveFilter ? 'No students match your search or tag filter.' : 'No other students found.'}
+              </p>
+            </div>
+          ) : (
               <div className="grid gap-3 md:gap-4 md:grid-cols-1">
                 {restOfStudents.map((student, index) => {
                   const rank = index + 4; // Because top 3 are extracted
@@ -305,7 +300,7 @@ function LeaderboardPage({ students, masterGoals, calculateTotalPoints, navigate
                         trackEvent('profile_open', { refId: student.id, metadata: { source: 'leaderboard' } });
                         navigateTo('/student', { id: student.id });
                       }}
-                      className="border-border shadow-none hover:shadow-soft transition-all cursor-pointer group active:scale-[0.99] rounded-xl overflow-hidden"
+                      className="border-none bg-card shadow-soft hover:shadow-inner transition-all cursor-pointer group active:scale-[0.99] rounded-xl overflow-hidden"
                     >
                       <CardContent className="p-4 md:p-6 flex items-center gap-3 md:gap-5">
                         <div className="flex flex-col items-center gap-1 w-8 md:w-12 shrink-0">
@@ -350,12 +345,12 @@ function LeaderboardPage({ students, masterGoals, calculateTotalPoints, navigate
                           )}
                         </div>
 
-                        <div className="flex items-center gap-3 md:gap-6 text-right shrink-0">
+                        <div className="flex items-center gap-3 md:gap-4 text-right shrink-0">
                           <div className="flex flex-col items-end justify-center">
                             <div className="text-xl md:text-3xl font-black text-foreground group-hover:text-primary transition-colors">{student.totalPoints}</div>
                             <div className="text-[10px] md:text-xs font-bold text-muted-foreground uppercase tracking-widest leading-none mt-1">Points</div>
                           </div>
-                          <div className="hidden sm:block">
+                          <div className="hidden sm:flex items-center justify-center w-12 md:w-16">
                             <RankMovement currentRank={rank} previousRank={student.previousRank} />
                           </div>
                         </div>
@@ -365,8 +360,7 @@ function LeaderboardPage({ students, masterGoals, calculateTotalPoints, navigate
                 })}
               </div>
             )}
-          </CardContent>
-        </Card>
+        </div>
       </div>
 
     </div>

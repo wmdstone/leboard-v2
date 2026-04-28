@@ -184,8 +184,7 @@ function StudentProfilePage({ studentId, students, masterGoals, categories, calc
         <ArrowLeft className="h-4 w-4 mr-2" /> Return to Board
       </Button>
 
-      <div className="bg-card rounded-xl p-4 sm:p-8 shadow-soft border border-border relative overflow-hidden group">
-        <div className="absolute top-0 left-0 w-full h-32 bg-primary/10 group-hover:bg-primary/20 transition-all duration-500"></div>
+      <div className="bg-card rounded-xl p-4 sm:p-8 shadow-soft border-none relative overflow-hidden group">
         <div className="relative z-10 flex flex-col items-center text-center mt-4">
           <div className="relative">
             <ImageFallback src={student.photo || dicebearAvatar(student.name)} alt={student.name} variant="avatar" className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 border-background bg-background object-cover shadow-soft" wrapperClassName="w-24 h-24 sm:w-32 sm:h-32 rounded-full shadow-soft" />
@@ -355,7 +354,7 @@ function StudentProfilePage({ studentId, students, masterGoals, categories, calc
                     >
                       <div className="p-4 space-y-3">
                         {goals.map(goal => (
-                          <div key={goal.id} className="flex items-center gap-4 bg-card p-4 rounded-2xl border border-border shadow-soft transition-all hover:border-primary/50 relative overflow-hidden">
+                          <div key={goal.id} className="flex items-center gap-4 bg-card p-4 rounded-2xl border-none shadow-soft transition-all relative overflow-hidden">
                             {/* Accent line for completed goals */}
                             {goal.completed && <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />}
                             

@@ -56,6 +56,7 @@ export function StudentSearchAdvanced({
           availableTags={availableTags}
           studentTagSource={studentTagSource}
           variant={variant}
+          hideSelectedTags={true}
         />
         <StudentSortDropdown
           value={sortKey}

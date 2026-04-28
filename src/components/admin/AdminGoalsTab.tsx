@@ -7,12 +7,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { SimpleMenu } from '../ui/SimpleMenu';
 import type { Category, MasterGoal } from '../../lib/types';
 
 export function AdminGoalsTab({ masterGoals, refreshData, categories }: any) {
@@ -169,27 +164,21 @@ export function AdminGoalsTab({ masterGoals, refreshData, categories }: any) {
                 <div className="flex items-center gap-2">
                   {!isSystem && editCatData?.id !== group.category.id && (
                     <div className="flex items-center" onClick={e => e.stopPropagation()}>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground mr-2">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="rounded-xl shadow-soft border-border">
-                          <DropdownMenuItem
-                            onClick={(e) => { e.stopPropagation(); setEditCatData(group.category); setEditCatName(group.category.name); }}
-                            className="font-medium cursor-pointer flex items-center gap-2"
-                          >
-                            <Edit2 className="w-4 h-4 text-muted-foreground" /> Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={(e) => { e.stopPropagation(); setDeleteCatConfirm(group.category); }}
-                            className="text-destructive focus:text-destructive font-medium cursor-pointer flex items-center gap-2"
-                          >
-                            <Trash2 className="w-4 h-4 text-destructive/70" /> Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <SimpleMenu
+                        options={[
+                          {
+                            label: "Edit",
+                            onClick: () => { setEditCatData(group.category); setEditCatName(group.category.name); },
+                            icon: <Edit2 className="w-4 h-4 text-muted-foreground" />
+                          },
+                          {
+                            label: "Delete",
+                            onClick: () => setDeleteCatConfirm(group.category),
+                            icon: <Trash2 className="w-4 h-4 text-destructive/70" />,
+                            variant: "destructive" as const
+                          }
+                        ]}
+                      />
                     </div>
                   )}
                   {isExpanded ? <ChevronUp className="w-5 h-5 text-muted-foreground" /> : <ChevronDown className="w-5 h-5 text-muted-foreground" />}
@@ -212,36 +201,35 @@ export function AdminGoalsTab({ masterGoals, refreshData, categories }: any) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                           {group.goals.map((mg: any) => (
                             <Card key={mg.id} className="rounded-xl border border-border shadow-none hover:shadow-soft transition-shadow group relative flex flex-col justify-between">
-                              <CardContent className="p-4 space-y-3">
-                                <div className="flex justify-between items-start gap-4">
-                                  <h4 className="font-bold text-foreground leading-tight flex-1" title={mg.title}>{mg.title}</h4>
-                                  <div className="bg-primary/10 px-2 py-1 rounded-lg text-xs font-black text-primary shrink-0">+{mg.points !== undefined ? mg.points : mg.pointValue || 0}</div>
+                              <CardContent className="p-4 space-y-2">
+                                <div className="flex justify-between items-start gap-2">
+                                  <h4 className="font-bold text-foreground leading-tight flex-1 pt-1" title={mg.title}>{mg.title}</h4>
+                                  <div className="flex items-start gap-2 shrink-0">
+                                    <div className="bg-primary/10 px-2 py-1 rounded-lg text-xs font-black text-primary mt-0.5 shrink-0">
+                                      +{mg.points !== undefined ? mg.points : mg.pointValue || 0}
+                                    </div>
+                                    <div className="opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity -mt-1 -mr-1">
+                                      <SimpleMenu
+                                        triggerClassName="bg-secondary/50 sm:bg-transparent rounded-full sm:rounded-md"
+                                        options={[
+                                          {
+                                            label: "Edit",
+                                            onClick: () => { setEditGoalData(mg); setGoalModalOpen(true); },
+                                            icon: <Edit2 className="w-4 h-4 text-muted-foreground" />
+                                          },
+                                          {
+                                            label: "Delete",
+                                            onClick: () => setDeleteGoalConfirm(mg),
+                                            icon: <Trash2 className="w-4 h-4 text-destructive/70" />,
+                                            variant: "destructive" as const
+                                          }
+                                        ]}
+                                      />
+                                    </div>
+                                  </div>
                                 </div>
-                                <p className="text-xs text-muted-foreground italic leading-relaxed line-clamp-2" title={mg.description}>{mg.description}</p>
+                                <p className="text-xs text-muted-foreground italic leading-relaxed line-clamp-2 pr-4" title={mg.description}>{mg.description}</p>
                               </CardContent>
-                              <div className="absolute top-2 right-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity bg-card rounded-xl">
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground">
-                                      <MoreHorizontal className="h-4 w-4" />
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end" className="rounded-xl shadow-soft border-border">
-                                    <DropdownMenuItem
-                                      onClick={() => { setEditGoalData(mg); setGoalModalOpen(true); }}
-                                      className="font-medium cursor-pointer flex items-center gap-2"
-                                    >
-                                      <Edit2 className="w-4 h-4 text-muted-foreground" /> Edit
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                      onClick={() => setDeleteGoalConfirm(mg)}
-                                      className="text-destructive focus:text-destructive font-medium cursor-pointer flex items-center gap-2"
-                                    >
-                                      <Trash2 className="w-4 h-4 text-destructive/70" /> Delete
-                                    </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                              </div>
                             </Card>
                           ))}
                         </div>

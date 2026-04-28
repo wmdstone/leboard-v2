@@ -4,7 +4,11 @@ import { Badge } from '@/components/ui/badge';
 
 export function RankMovement({ currentRank, previousRank }: { currentRank: number, previousRank?: number }) {
   if (previousRank === undefined || previousRank === null || previousRank === currentRank) {
-    return <div className="text-muted-foreground font-bold text-xs flex items-center justify-center w-6">—</div>;
+    return (
+      <Badge variant="outline" className="flex items-center justify-center px-2 py-0.5 bg-muted/20 text-muted-foreground border-transparent rounded-full shrink-0 shadow-none opacity-50">
+        <span className="text-[10px] font-bold">—</span>
+      </Badge>
+    );
   }
   
   if (currentRank < previousRank) {

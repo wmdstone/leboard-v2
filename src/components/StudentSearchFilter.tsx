@@ -21,6 +21,7 @@ interface Props {
   studentTagSource?: string[][];
   maxQuickChips?: number;
   mode?: 'full' | 'search' | 'tags';
+  hideSelectedTags?: boolean;
 }
 
 export function StudentSearchFilter({
@@ -33,6 +34,7 @@ export function StudentSearchFilter({
   studentTagSource,
   maxQuickChips = 6,
   mode = 'full',
+  hideSelectedTags = false,
 }: Props) {
   const [open, setOpen] = useState(false);
   const [localQuery, setLocalQuery] = useState(value.query);
@@ -94,17 +96,17 @@ export function StudentSearchFilter({
   return (
     <div className={`flex flex-col sm:flex-row gap-2 items-stretch min-w-0 ${className}`}>
       {mode !== 'tags' && (
-        <div className="relative flex-1 min-w-0">
-          <Search className={`absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 ${isDark ? 'text-foreground/70' : 'text-muted-foreground'}`} />
+        <div className="relative flex-1 min-w-0 group">
+          <Search className={`absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 transition-colors ${isDark ? 'text-foreground/70 group-focus-within:text-primary' : 'text-muted-foreground group-focus-within:text-primary'}`} />
           <Input
             type="text"
             value={localQuery}
             onChange={(e) => setLocalQuery(e.target.value)}
             placeholder={placeholder}
-            className={`w-full pl-12 pr-10 h-12 sm:h-10 rounded-2xl sm:rounded-xl shadow-soft transition-all ${
+            className={`w-full pl-12 pr-10 h-12 sm:h-10 rounded-2xl sm:rounded-xl shadow-inner border-none transition-all ${
               isDark 
-                ? 'bg-secondary/20 border-foreground/10 text-foreground focus-visible:ring-primary/20 backdrop-blur-md'
-                : 'bg-background border-border focus-visible:ring-primary/20'
+                ? 'bg-secondary/30 text-foreground focus-visible:ring-primary/20 backdrop-blur-md'
+                : 'bg-secondary/10 text-foreground focus-visible:ring-primary/20'
             }`}
           />
           {localQuery && (
@@ -223,7 +225,7 @@ export function StudentSearchFilter({
         </div>
       )}
 
-      {mode !== 'search' && value.tags.length > 0 && (
+      {!hideSelectedTags && mode !== 'search' && value.tags.length > 0 && (
         <div className="flex flex-wrap gap-1.5 items-center w-full sm:w-auto sm:max-w-[40%] basis-full sm:basis-auto mt-2 sm:mt-0">
           {value.tags.map((tag) => (
             <Badge

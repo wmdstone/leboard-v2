@@ -18,12 +18,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { DataTable } from '@/components/ui/DataTable';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { SimpleMenu } from '../ui/SimpleMenu';
 
 export function AdminStudentsTab({ students, refreshData, masterGoals, categories, calculateTotalPoints }: any) {
   const [searchFilter, setSearchFilter] = useState<StudentSearchFilterValue>(emptyStudentSearchFilter);
@@ -140,32 +135,22 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
       header: "Actions",
       cell: ({ row }) => {
         const student = row.original;
+        const options = [
+          {
+            label: "Edit Profile",
+            onClick: () => { setEditData(student); setModalOpen(true); },
+            icon: <Edit2 className="w-4 h-4 text-muted-foreground" />
+          },
+          {
+            label: "Delete Student",
+            onClick: () => setDeleteConfirm(student),
+            icon: <Trash2 className="w-4 h-4 text-destructive/70" />,
+            variant: "destructive" as const
+          }
+        ];
         return (
           <div className="text-right">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="rounded-xl shadow-soft border-border">
-                <DropdownMenuItem
-                  onClick={() => { setEditData(student); setModalOpen(true); }}
-                  className="font-medium cursor-pointer flex items-center gap-2"
-                >
-                  <Edit2 className="w-4 h-4 text-muted-foreground" />
-                  Edit Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => setDeleteConfirm(student)}
-                  className="text-destructive focus:text-destructive font-medium cursor-pointer flex items-center gap-2"
-                >
-                  <Trash2 className="w-4 h-4 text-destructive/70" />
-                  Delete Student
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <SimpleMenu options={options} />
           </div>
         );
       },
@@ -180,24 +165,6 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
           <p className="text-muted-foreground text-sm mt-3">Manage profile and goal assignments.</p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
-          <Button 
-            variant="outline"
-            onClick={async () => {
-              const baseC = confirm('Are you sure you want to snapshot current ranks? This will freeze the current leader positions to calculate rank changes.');
-              if(!baseC) return;
-              try {
-                const res = await apiFetch('/api/students/snapshot-ranks', { method: 'POST' });
-                if(res.ok) {
-                  alert('Ranks successfully snapshotted. Rank changes (up/down arrows) will now appear on the leaderboard when students gain points.');
-                  refreshData();
-                } else alert('Failed to snapshot ranks');
-              } catch(e) { console.error(e); }
-            }}
-            className="rounded-xl h-12 flex-1 sm:flex-none border-border shadow-soft text-foreground gap-2 font-bold"
-            title="Saves current ranks so you can track movement (up/down)"
-          >
-            <TrendingUp className="h-4 w-4" /> Snapshot Ranks
-          </Button>
           <Button 
             onClick={() => { setEditData(null); setModalOpen(true); }} 
             className="rounded-xl h-12 flex-1 sm:flex-none shadow-primary-glow gap-2 font-bold"

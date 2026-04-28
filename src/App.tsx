@@ -69,7 +69,7 @@ export default function App() {
     }
   }, [appSettings]);
   
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => (localStorage.getItem('theme-mode') as 'light' | 'dark') || 'light');
+  const [themeMode, setThemeMode] = useState<'light' | 'dark'>(() => (localStorage.getItem('theme-mode') as 'light' | 'dark') || 'dark');
 
   useEffect(() => {
     if (themeMode === 'dark') {

@@ -38,7 +38,7 @@ export const STATS_CAPTION = {
 // Chart-level filter presets used by the reusable <TimeRangeFilter /> component.
 // Charts share these so wording stays consistent everywhere a time range is shown.
 
-export type RangePreset = 'last-week' | 'last-month' | 'last-year' | 'all-time' | 'custom';
+export type RangePreset = 'this-week' | 'last-week' | 'this-month' | 'last-month' | 'last-3-months' | 'last-6-months' | 'last-year' | 'all-time' | 'custom';
 
 export interface RangePresetOption {
   value: RangePreset;
@@ -46,8 +46,12 @@ export interface RangePresetOption {
 }
 
 export const RANGE_PRESET_OPTIONS: RangePresetOption[] = [
+  { value: 'this-week',  label: 'This week'  },
   { value: 'last-week',  label: 'Last week'  },
+  { value: 'this-month', label: 'This month' },
   { value: 'last-month', label: 'Last month' },
+  { value: 'last-3-months', label: 'Last 3 months' },
+  { value: 'last-6-months', label: 'Last 6 months' },
   { value: 'last-year',  label: 'Last year'  },
   { value: 'all-time',   label: 'All-time'   },
   { value: 'custom',     label: 'Custom range' },
@@ -79,8 +83,16 @@ export function presetToRange(preset: RangePreset, now: Date = new Date()): Date
 
   const end = endOfDay(now);
   const start = new Date(now);
+  if (preset === 'this-week') {
+    const day = now.getDay();
+    const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+    start.setDate(diff);
+  }
   if (preset === 'last-week')  start.setDate(now.getDate() - 6);   // 7-day window incl. today
+  if (preset === 'this-month') start.setDate(1);
   if (preset === 'last-month') start.setDate(now.getDate() - 29);  // 30-day window
+  if (preset === 'last-3-months') start.setMonth(now.getMonth() - 3);
+  if (preset === 'last-6-months') start.setMonth(now.getMonth() - 6);
   if (preset === 'last-year')  start.setFullYear(now.getFullYear() - 1);
   return { start: startOfDay(start), end };
 }

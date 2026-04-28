@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowDownUp, ArrowDown, ArrowUp, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export type SortKey = 'points' | 'name' | 'newest' | 'oldest';
 
@@ -49,21 +50,23 @@ export function StudentSortDropdown({
   const current = options.find((o) => o.value === value) || options[0];
   const isDark = variant === 'dark';
 
-  const btnCls = isDark
-    ? 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-base-50/20 bg-base-900/30 text-primary-foreground hover:bg-base-900/50 backdrop-blur-md text-[11px] font-bold transition-all whitespace-nowrap'
-    : 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border bg-card text-foreground hover:border-primary-300 text-[11px] font-bold transition-all whitespace-nowrap';
-
   const DirIcon = current.direction === 'asc' ? ArrowUp : current.direction === 'desc' ? ArrowDown : ArrowDownUp;
 
   return (
     <div className={`relative min-w-0 ${className}`} ref={ref}>
-      <button type="button" onClick={() => setOpen((o) => !o)} className={btnCls}>
-        <ArrowDownUp className="h-3.5 w-3.5 opacity-70 shrink-0" />
+      <Button
+        variant={isDark ? 'secondary' : 'outline'}
+        onClick={() => setOpen((o) => !o)}
+        className={`w-full sm:w-auto h-12 sm:h-10 rounded-2xl sm:rounded-xl shadow-soft font-bold gap-2 border-none active:scale-95 transition-all ${
+          isDark ? 'bg-secondary/30 backdrop-blur-md hover:bg-secondary/50' : 'bg-background hover:bg-secondary/50'
+        }`}
+      >
+        <ArrowDownUp className="h-4 w-4" />
         <span>Sort</span>
-        <DirIcon className="h-3.5 w-3.5 opacity-70 shrink-0" />
-      </button>
+        <DirIcon className="h-4 w-4" />
+      </Button>
       {open && (
-        <div className="absolute left-0 mt-2 w-48 sm:w-56 bg-card border border-border rounded-2xl shadow-soft z-50 p-1.5 sm:p-2">
+        <div className="absolute left-0 mt-2 w-48 sm:w-56 bg-card border-none rounded-2xl shadow-soft z-50 p-1.5 sm:p-2 animate-in fade-in zoom-in-95 duration-200">
           <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 px-3 pt-1 pb-2">
             Sort by
           </div>
