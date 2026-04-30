@@ -13,7 +13,6 @@ import { FloatingActionContainer } from "@/components/ui/FloatingActionContainer
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 import { PwaDownloadPrompt } from "@/components/ui/PwaDownloadPrompt";
 import { Trophy, Settings, LogOut, LogIn, Loader2, Home, LayoutDashboard, Sun, Moon } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -172,17 +171,9 @@ function AppContent({ children }: { children: React.ReactNode }) {
       {/* Main Content Area */}
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 overflow-x-hidden">
         <ErrorBoundary>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={pathname}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-            >
-              {children}
-            </motion.div>
-          </AnimatePresence>
+          <div key={pathname}>
+            {children}
+          </div>
         </ErrorBoundary>
       </main>
 
