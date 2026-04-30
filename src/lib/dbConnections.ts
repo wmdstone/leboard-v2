@@ -52,10 +52,10 @@ export type DbKeyType = "publishable" | "service_role" | "unknown";
 // .env values win; the hardcoded fallbacks below ensure the app still boots
 // even if env injection is missing (e.g. an old cached build).
 const DEFAULT_URL =
-  (import.meta as any).env?.VITE_SUPABASE_URL ||
+  process.env.NEXT_PUBLIC_SUPABASE_URL ||
   "https://xmsjbzujyfrkecgwfxlc.supabase.co";
 const DEFAULT_KEY =
-  (import.meta as any).env?.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
   "sb_publishable_NK7ByKJ_l2qizNoICxrnXQ_-2zTWOiE";
 
 const defaultConnection: DbConnection = {

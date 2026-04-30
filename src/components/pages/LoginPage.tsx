@@ -25,11 +25,11 @@ function LoginPage({ onLogin, appSettings }: { onLogin: () => void, appSettings?
         if (data.token) setLocalToken(data.token);
         onLogin();
       } else {
-        setError('Invalid password. Please try again.');
+        setError('Kata sandi salah. Silakan coba lagi.');
       }
     } catch (err) {
       console.error("Login fetch error:", err);
-      setError(`An error occurred: ${String(err)}`);
+      setError(`Terjadi kesalahan: ${String(err)}`);
     } finally {
       setLoading(false);
     }
@@ -46,13 +46,13 @@ function LoginPage({ onLogin, appSettings }: { onLogin: () => void, appSettings?
               <Settings className="w-8 h-8 text-primary-foreground" />
             </div>
           )}
-          <h1 className="text-2xl font-bold text-foreground">{appSettings?.appName || 'Admin Login'}</h1>
-          <p className="text-muted-foreground mt-1">Access restricted to authorized educators only.</p>
+          <h1 className="text-2xl font-bold text-foreground">{appSettings?.appName || 'Login Admin'}</h1>
+          <p className="text-muted-foreground mt-1">Akses terbatas hanya untuk pendidik resmi.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-bold text-muted-foreground mb-2">Access Password</label>
+            <label className="block text-sm font-bold text-muted-foreground mb-2">Kata Sandi Akses</label>
             <input 
               type="password" 
               value={password}
@@ -69,7 +69,7 @@ function LoginPage({ onLogin, appSettings }: { onLogin: () => void, appSettings?
             disabled={loading}
             className="w-full bg-primary py-3 rounded-2xl text-primary-foreground font-bold text-lg shadow-soft shadow-primary-100 hover:bg-primary-700 active:scale-95 transition-all flex items-center justify-center gap-2"
           >
-            {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Authorize Access"}
+            {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Otorisasi Akses"}
           </button>
         </form>
       </div>

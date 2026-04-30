@@ -239,7 +239,9 @@ export async function firebaseApiFetch(
     }
     if (path === "/api/me" && method === "GET") {
       const headers: any = init.headers;
-      const auth = headers?.get?.("Authorization") || headers?.Authorization;
+      let auth = null;
+      if (headers && typeof headers.get === "function") auth = headers.get("Authorization") || headers.get("authorization");
+      else if (headers) auth = headers.Authorization || headers.authorization;
       const token = typeof auth === "string" ? auth.replace("Bearer ", "") : null;
       return ok({ authenticated: token === TOKEN_VALUE });
     }

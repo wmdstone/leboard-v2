@@ -16,22 +16,22 @@ export interface TimeRangeOption {
 }
 
 export const TIME_RANGE_OPTIONS: TimeRangeOption[] = [
-  { value: TIME_RANGE.ALL_TIME, label: 'All-Time', shortLabel: 'All-Time' },
-  { value: TIME_RANGE.MONTHLY,  label: 'Monthly',  shortLabel: 'Monthly'  },
-  { value: TIME_RANGE.WEEKLY,   label: 'Weekly',   shortLabel: 'Weekly'   },
+  { value: TIME_RANGE.ALL_TIME, label: 'Sepanjang waktu', shortLabel: 'Semua' },
+  { value: TIME_RANGE.MONTHLY,  label: 'Bulanan',  shortLabel: 'Bulanan'  },
+  { value: TIME_RANGE.WEEKLY,   label: 'Mingguan',   shortLabel: 'Mingguan'   },
 ];
 
 export const POINTS_CAPTION = {
-  ALL_TIME: 'All-Time Pts',
-  MONTHLY: 'Monthly Pts',
-  WEEKLY: 'Weekly Pts',
+  ALL_TIME: 'Total Poin',
+  MONTHLY: 'Poin Bulanan',
+  WEEKLY: 'Poin Mingguan',
 } as const;
 
 export const STATS_CAPTION = {
-  STUDENTS: 'All-Time Students',
-  ACTIVE_GOALS: 'Active Goals',
-  UNIQUE_VIEWS: 'All-Time Unique Views',
-  POINTS_DISTRIBUTED: 'All-Time Points Distributed',
+  STUDENTS: 'Total Siswa',
+  ACTIVE_GOALS: 'Tujuan Aktif',
+  UNIQUE_VIEWS: 'Total Tayangan Unik',
+  POINTS_DISTRIBUTED: 'Total Poin Didistribusikan',
 } as const;
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -46,15 +46,15 @@ export interface RangePresetOption {
 }
 
 export const RANGE_PRESET_OPTIONS: RangePresetOption[] = [
-  { value: 'this-week',  label: 'This week'  },
-  { value: 'last-week',  label: 'Last week'  },
-  { value: 'this-month', label: 'This month' },
-  { value: 'last-month', label: 'Last month' },
-  { value: 'last-3-months', label: 'Last 3 months' },
-  { value: 'last-6-months', label: 'Last 6 months' },
-  { value: 'last-year',  label: 'Last year'  },
-  { value: 'all-time',   label: 'All-time'   },
-  { value: 'custom',     label: 'Custom range' },
+  { value: 'this-week',  label: 'Minggu ini'  },
+  { value: 'last-week',  label: 'Minggu lalu'  },
+  { value: 'this-month', label: 'Bulan ini' },
+  { value: 'last-month', label: 'Bulan lalu' },
+  { value: 'last-3-months', label: '3 bulan lalu' },
+  { value: 'last-6-months', label: '6 bulan lalu' },
+  { value: 'last-year',  label: 'Tahun lalu'  },
+  { value: 'all-time',   label: 'Sepanjang waktu'   },
+  { value: 'custom',     label: 'Rentang kustom' },
 ];
 
 export interface DateRange {

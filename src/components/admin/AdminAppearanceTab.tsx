@@ -348,15 +348,15 @@ export function AdminAppearanceTab({ refreshData, appSettings, setAppSettings }:
                 <input type="text" name="appName" value={settings.appName} onChange={handleChange} className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm focus:ring focus:ring-primary/50" placeholder="e.g. Mamba'ul Huda Student Portal" />
               </div>
               <div>
-                <label className="block text-sm font-bold text-foreground mb-1">Badge Title</label>
+                <label className="block text-sm font-bold text-foreground mb-1">Judul Lencana</label>
                 <input type="text" name="badgeTitle" value={settings.badgeTitle} onChange={handleChange} className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm focus:ring focus:ring-primary/50" placeholder="e.g. Season 2 Active" />
               </div>
               <div>
-                <label className="block text-sm font-bold text-foreground mb-1">Hero Headline</label>
+                <label className="block text-sm font-bold text-foreground mb-1">Hero Judul Utama</label>
                 <input type="text" name="heroTitle" value={settings.heroTitle} onChange={handleChange} className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm focus:ring focus:ring-primary/50" placeholder="e.g. Global Leaderboard" />
               </div>
               <div>
-                <label className="block text-sm font-bold text-foreground mb-1">Hero Subtitle</label>
+                <label className="block text-sm font-bold text-foreground mb-1">Subjudul Hero</label>
                 <textarea rows={3} name="heroSubtitle" value={settings.heroSubtitle} onChange={(e:any) => handleChange(e)} className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm focus:ring focus:ring-primary/50" />
               </div>
               <div>
@@ -370,7 +370,7 @@ export function AdminAppearanceTab({ refreshData, appSettings, setAppSettings }:
                         <ImageIcon className="w-8 h-8 opacity-50" />
                       </div>
                     )}
-                    <button type="button" onClick={() => logoInputRef.current?.click()} className="absolute inset-0 bg-black/60 rounded-2xl flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm" title="Upload Logo">
+                    <button type="button" onClick={() => logoInputRef.current?.click()} className="absolute inset-0 bg-black/60 rounded-2xl flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm" title="Unggah Logo">
                       <ImageIcon className="w-6 h-6" />
                     </button>
                     <input type="file" ref={logoInputRef} onChange={handleLogoUpload} accept="image/*" className="hidden" />
@@ -390,14 +390,14 @@ export function AdminAppearanceTab({ refreshData, appSettings, setAppSettings }:
             className="w-full bg-primary text-primary-foreground px-8 py-5 rounded-2xl font-black shadow-primary-glow flex justify-center items-center gap-2 hover:opacity-90 active:scale-95 transition-all text-lg"
           >
             {saving ? <Loader2 className="w-6 h-6 animate-spin" /> : <Save className="w-6 h-6" />}
-            {saving ? 'Synchronizing to Firebase...' : 'Save & Publish Theme Engine'}
+            {saving ? 'Menyinkronkan ke Firebase...' : 'Simpan & Publikasikan Tema'}
           </button>
         </div>
 
         {/* LIVE PREVIEW PANE */}
         <div className="space-y-6">
           <div className="sticky top-8">
-             <h4 className="font-black text-foreground mb-4 uppercase tracking-widest text-sm">Live Sandbox Preview</h4>
+             <h4 className="font-black text-foreground mb-4 uppercase tracking-widest text-sm">Pratinjau Langsung Sandbox</h4>
              
              <div className="bg-background border border-border rounded-xl p-6 mb-4 shadow-soft">
                 {/* Preview: Navbar mini */}
@@ -408,7 +408,7 @@ export function AdminAppearanceTab({ refreshData, appSettings, setAppSettings }:
                     ) : (
                       <div className="bg-primary p-2.5 rounded-xl shadow-soft"><Trophy className="w-5 h-5 text-primary-foreground" /></div>
                     )}
-                    <span className="font-black text-foreground text-lg">{settings.appName || 'Your App'}</span>
+                    <span className="font-black text-foreground text-lg">{settings.appName || 'Aplikasi Anda'}</span>
                   </div>
                   <div className="w-10 h-10 bg-secondary border-2 border-background shadow-soft rounded-full" />
                 </div>
@@ -420,14 +420,14 @@ export function AdminAppearanceTab({ refreshData, appSettings, setAppSettings }:
                   </div>
                   <div className="relative z-10 space-y-4">
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary text-secondary-foreground rounded-full text-xs font-bold uppercase tracking-widest">
-                      <Flame className="w-4 h-4 text-destructive" /> {settings.badgeTitle || 'Badge'}
+                      <Flame className="w-4 h-4 text-destructive" /> {settings.badgeTitle || 'Lencana'}
                     </div>
                     <h1 className="text-3xl font-black tracking-tight leading-tight text-card-foreground">{settings.heroTitle || 'Headline'}</h1>
                     <p className="text-sm font-medium text-muted-foreground leading-relaxed max-w-sm">
-                      {settings.heroSubtitle || 'Subtitle about your application.'}
+                      {settings.heroSubtitle || 'Subjudul tentang aplikasi Anda.'}
                     </p>
                     <button className="bg-accent text-accent-foreground px-6 py-3 rounded-xl font-bold shadow-soft active:scale-95 transition-transform mt-2">
-                       Explore Now
+                       Jelajahi Sekarang
                     </button>
                   </div>
                 </div>
@@ -442,12 +442,12 @@ export function AdminAppearanceTab({ refreshData, appSettings, setAppSettings }:
                        <UserIcon className="w-7 h-7 text-primary" />
                     </div>
                     <div>
-                      <h5 className="font-bold text-card-foreground text-lg mb-0.5">Student Example</h5>
-                      <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Web Dev Track</p>
+                      <h5 className="font-bold text-card-foreground text-lg mb-0.5">Contoh Siswa</h5>
+                      <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Jalur Web Dev</p>
                     </div>
                     <div className="ml-auto text-right">
                       <div className="text-2xl font-black text-foreground">1,250</div>
-                      <div className="text-[10px] text-primary font-bold uppercase tracking-widest">PTS</div>
+                      <div className="text-[10px] text-primary font-bold uppercase tracking-widest">POIN</div>
                     </div>
                   </div>
                 </div>

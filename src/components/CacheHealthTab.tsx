@@ -161,7 +161,7 @@ export function CacheHealthTab() {
         </div>
         <div className="min-w-0">
           <h2 className="text-xl sm:text-2xl font-black text-foreground">
-            PWA Management & Health
+            Manajemen & Status PWA
           </h2>
           <p className="text-sm text-muted-foreground font-medium">
             Inspect the service worker, manage PWA status, clear caches, and confirm new
@@ -180,20 +180,20 @@ export function CacheHealthTab() {
       <PwaCapabilitiesCard />
 
       <div className="rounded-2xl border border-border bg-card p-4 space-y-3">
-        <h3 className="font-black text-foreground text-sm">Actions</h3>
+        <h3 className="font-black text-foreground text-sm">Aksi</h3>
         <div className="grid sm:grid-cols-2 gap-2">
           <button
             onClick={handleSkipWaiting}
             disabled={busy !== null || !hasWaiting}
             className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700 disabled:opacity-50 active:scale-95 transition-all"
-            title={hasWaiting ? "Activate the pending update" : "No update waiting"}
+            title={hasWaiting ? "Aktifkan pembaruan tertunda" : "Tidak ada pembaruan tertunda"}
           >
             {busy === "skipping" ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
               <CheckCircle2 className="w-4 h-4" />
             )}
-            Activate pending update
+            Aktifkan pembaruan tertunda
           </button>
           <button
             onClick={handleHardRefresh}
@@ -205,7 +205,7 @@ export function CacheHealthTab() {
             ) : (
               <RefreshCw className="w-4 h-4" />
             )}
-            Re-check status
+            Cek ulang status
           </button>
           <button
             onClick={handleUnregister}
@@ -213,7 +213,7 @@ export function CacheHealthTab() {
             className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-amber-600 text-white font-bold hover:bg-amber-700 disabled:opacity-60 active:scale-95 transition-all"
           >
             <AlertTriangle className="w-4 h-4" />
-            Unregister service worker
+            Hapus Service Worker
           </button>
         </div>
         {lastAction && (
@@ -223,10 +223,10 @@ export function CacheHealthTab() {
 
       <div className="rounded-2xl border border-border bg-card p-4">
         <h3 className="font-black text-foreground text-sm mb-2 flex items-center gap-2">
-          <HardDrive className="w-4 h-4" /> Cache buckets
+          <HardDrive className="w-4 h-4" /> Penyimpanan Cache
         </h3>
         {cacheKeys.length === 0 ? (
-          <p className="text-xs text-muted-foreground">No caches stored.</p>
+          <p className="text-xs text-muted-foreground">Tidak ada cache yang disimpan.</p>
         ) : (
           <ul className="text-xs font-mono space-y-1">
             {cacheKeys.map((k) => (
@@ -259,7 +259,7 @@ function StatusCard({
     return (
       <div className="rounded-2xl border border-border bg-card p-4 flex items-center gap-3">
         <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
-        <span className="text-sm text-muted-foreground font-bold">Checking…</span>
+        <span className="text-sm text-muted-foreground font-bold">Memeriksa…</span>
       </div>
     );
   }
@@ -276,10 +276,10 @@ function StatusCard({
       <div className="rounded-2xl border border-border bg-card p-4 text-sm text-foreground">
         <div className="flex items-center gap-2 mb-1">
           <Cpu className="w-4 h-4 text-muted-foreground" />
-          <span className="font-black">No service worker registered.</span>
+          <span className="font-black">Tidak ada service worker terdaftar.</span>
         </div>
         <p className="text-xs text-muted-foreground">
-          The app is running directly from the network. {cacheKeys.length} stale
+          Aplikasi berjalan langsung dari jaringan. {cacheKeys.length} stale
           cache(s) found and can be cleared below.
         </p>
       </div>
@@ -290,24 +290,24 @@ function StatusCard({
       <div className="flex items-center gap-2 mb-2">
         <CheckCircle2 className="w-4 h-4 text-emerald-700" />
         <span className="font-black text-emerald-900">
-          Service worker active
+          Service worker aktif
         </span>
         {hasWaiting && (
           <span className="ml-auto text-[10px] font-bold uppercase tracking-wide bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">
-            update waiting
+            Pembaruan tertunda
           </span>
         )}
       </div>
       <dl className="grid grid-cols-3 gap-x-4 gap-y-1 text-xs">
         <dt className="text-muted-foreground font-bold">Version</dt>
         <dd className="col-span-2 font-mono text-foreground truncate">
-          {info?.version || "unknown"}
+          {info?.version || "tidak diketahui"}
         </dd>
         <dt className="text-muted-foreground font-bold">Build</dt>
         <dd className="col-span-2 font-mono text-foreground truncate">
           {info?.buildId || "—"}
         </dd>
-        <dt className="text-muted-foreground font-bold">Scope</dt>
+        <dt className="text-muted-foreground font-bold">Cakupan</dt>
         <dd className="col-span-2 font-mono text-foreground truncate">
           {info?.scope || "—"}
         </dd>
@@ -366,10 +366,10 @@ function PwaCapabilitiesCard() {
   return (
     <div className="rounded-2xl border border-border bg-card p-4 space-y-4">
       <h3 className="font-black text-foreground text-sm flex items-center gap-2">
-        <Smartphone className="w-4 h-4" /> Device Integration & Status
+        <Smartphone className="w-4 h-4" /> Integrasi Perangkat & Status
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Network Status */}
+        {/* Jaringan Status */}
         <div className="flex flex-col p-3 rounded-xl bg-background border border-border shadow-soft">
           <div className="flex items-center gap-2 mb-1">
             {isOnline ? <Wifi className="w-4 h-4 text-emerald-600" /> : <WifiOff className="w-4 h-4 text-red-600" />}
@@ -380,7 +380,7 @@ function PwaCapabilitiesCard() {
           </span>
         </div>
 
-        {/* Display Mode */}
+        {/* Mode Tampilan */}
         <div className="flex flex-col p-3 rounded-xl bg-background border border-border shadow-soft">
           <div className="flex items-center gap-2 mb-1">
             <Smartphone className="w-4 h-4 text-primary" />
@@ -391,7 +391,7 @@ function PwaCapabilitiesCard() {
           </span>
         </div>
 
-        {/* Notifications */}
+        {/* Notifikasi */}
         <div className="flex flex-col p-3 rounded-xl bg-background border border-border shadow-soft">
           <div className="flex items-center justify-between mb-1">
             <div className="flex items-center gap-2">

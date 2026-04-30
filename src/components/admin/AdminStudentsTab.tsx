@@ -88,7 +88,7 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
       await Promise.all(ids.map(id => apiFetch(`/api/students/${id}`, { method: 'DELETE' })));
       refreshData();
     } catch (err: any) {
-      alert('Failed to delete some students: ' + err.message);
+      alert('Gagal menghapus beberapa siswa: ' + err.message);
     }
   };
 
@@ -102,7 +102,7 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
             (table.getIsSomePageRowsSelected() && "indeterminate")
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
+          aria-label="Pilih semua"
           className="rounded border-border text-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground focus-visible:ring-primary h-4 w-4"
         />
       ),
@@ -110,7 +110,7 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
+          aria-label="Pilih baris"
           className="rounded border-border text-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground focus-visible:ring-primary h-4 w-4"
         />
       ),
@@ -150,7 +150,7 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
         const student = row.original;
         return (
           <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-            {student.assignedGoals?.length || 0} Handled Goals
+            {student.assignedGoals?.length || 0} Tujuan Ditugaskan
           </div>
         );
       },
@@ -179,17 +179,17 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
     },
     {
       id: "actions",
-      header: "Actions",
+      header: "Aksi",
       cell: ({ row }) => {
         const student = row.original;
         const options = [
           {
-            label: "Edit Profile",
+            label: "Edit Profil",
             onClick: () => { setEditData(student); setModalOpen(true); },
             icon: <Edit2 className="w-4 h-4 text-muted-foreground" />
           },
           {
-            label: "Delete Student",
+            label: "Hapus Siswa",
             onClick: () => setDeleteConfirm(student),
             icon: <Trash2 className="w-4 h-4 text-destructive/70" />,
             variant: "destructive" as const
@@ -208,15 +208,15 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
     <div className="p-4 sm:p-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
-          <h3 className="text-2xl font-black text-foreground underline decoration-primary decoration-4 underline-offset-8">Student List</h3>
-          <p className="text-muted-foreground text-sm mt-3">Manage profile and goal assignments.</p>
+          <h3 className="text-2xl font-black text-foreground underline decoration-primary decoration-4 underline-offset-8">Daftar Siswa</h3>
+          <p className="text-muted-foreground text-sm mt-3">Kelola profil dan tugas kompetensi dasar.</p>
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
           <Button 
             onClick={() => { setEditData(null); setModalOpen(true); }} 
             className="rounded-xl h-12 flex-1 sm:flex-none shadow-primary-glow gap-2 font-bold"
           >
-            <Plus className="h-4 w-4" /> Add Student
+            <Plus className="h-4 w-4" /> Tambah Siswa
           </Button>
         </div>
       </div>
@@ -229,7 +229,7 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
           onSortChange={setSortKey}
           availableTags={availableTags}
           studentTagSource={studentTagSource}
-          placeholder="Search students..."
+          placeholder="Cari siswa..."
         />
       </div>
 
@@ -237,7 +237,7 @@ export function AdminStudentsTab({ students, refreshData, masterGoals, categorie
         columns={columns} 
         data={filtered} 
         filterColumn="name" 
-        filterPlaceholder="Filter students..." 
+        filterPlaceholder="Filter siswa..." 
         onDeleteSelected={handleBulkDelete}
       />
 
@@ -424,7 +424,7 @@ function StudentAdminModal({ student, masterGoals, categories, onClose, onSave }
             <div className="text-center">
                <div className="relative inline-block group">
                 <Avatar src={formData.photo} alt="Avatar" className="w-32 h-32 rounded-xl border-4 border-card bg-secondary shadow-md object-cover" wrapperClassName="w-32 h-32" />
-                <button type="button" onClick={() => fileInputRef.current?.click()} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-foreground/60 p-3 rounded-full text-background opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm shadow-soft" title="Upload Photo">
+                <button type="button" onClick={() => fileInputRef.current?.click()} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-foreground/60 p-3 rounded-full text-background opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm shadow-soft" title="Unggah Foto">
                   <ImageIcon className="w-6 h-6" />
                 </button>
                 <input type="file" ref={fileInputRef} onChange={handleFileUpload} accept="image/*" className="hidden" />
@@ -441,7 +441,7 @@ function StudentAdminModal({ student, masterGoals, categories, onClose, onSave }
                 <input type="text" className="w-full bg-secondary border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary/50" placeholder="Paste image URL here" value={formData.photo} onChange={e => setFormData(p => ({...p, photo: e.target.value}))}/>
               </div>
               <div>
-                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 block">Full Name</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 block">Nama Lengkap</label>
                 <input type="text" className="w-full bg-secondary border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary/50" value={formData.name} onChange={e => setFormData(p => ({...p, name: e.target.value}))}/>
               </div>
               <div>
@@ -449,7 +449,7 @@ function StudentAdminModal({ student, masterGoals, categories, onClose, onSave }
                 <textarea rows={2} className="w-full bg-secondary border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary/50" value={formData.bio} onChange={e => setFormData(p => ({...p, bio: e.target.value}))}/>
               </div>
               <div>
-                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 block">Tags (Multi-tags for Search)</label>
+                <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 block">Tag (Untuk Pencarian)</label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {(formData.tags || []).map((tag, idx) => (
                     <span key={idx} className="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded-md flex items-center gap-1">
@@ -460,7 +460,7 @@ function StudentAdminModal({ student, masterGoals, categories, onClose, onSave }
                 <input 
                   type="text" 
                   className="w-full bg-secondary border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary/50" 
-                  placeholder="Type a tag & press Enter" 
+                  placeholder="Ketik tag dan tekan Enter" 
                   value={tagInput} 
                   onChange={e => setTagInput(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addTag(); } }}
@@ -473,11 +473,11 @@ function StudentAdminModal({ student, masterGoals, categories, onClose, onSave }
           <div className="flex-1 border-border lg:border-l lg:pl-8 pt-8 lg:pt-0">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4">
               <div>
-                <h3 className="text-lg font-black text-foreground">Track Assigments</h3>
-                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-none mt-1">Configure goals for this student</p>
+                <h3 className="text-lg font-black text-foreground">Penugasan Jalur</h3>
+                <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest leading-none mt-1">Atur tugas untuk siswa ini</p>
               </div>
               <select className="bg-secondary border-none rounded-xl p-2 text-xs font-bold text-foreground focus:ring-2 focus:ring-primary/50" value={filterCat} onChange={e => setFilterCat(e.target.value)}>
-                <option value="ALL">All Tracks</option>
+                <option value="ALL">Semua Jalur</option>
                 {categories.map((c: any, index: number) => <option key={c.id || `cp1-${index}`} value={c.id}>{c.name}</option>)}
               </select>
             </div>
@@ -486,7 +486,7 @@ function StudentAdminModal({ student, masterGoals, categories, onClose, onSave }
             {visibleGoalIds.length > 0 && (
               <div className="mb-4 p-3 rounded-2xl bg-secondary/30 border border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                  Bulk on <span className="text-primary">{scopeLabel}</span>
+                  Pilih Semua di <span className="text-primary">{scopeLabel}</span>
                   <span className="ml-2 normal-case tracking-normal font-bold text-muted-foreground">
                     · {visibleAssignedCount}/{visibleGoalIds.length} assigned · {visibleCompletedCount} completed
                   </span>
@@ -500,10 +500,10 @@ function StudentAdminModal({ student, masterGoals, categories, onClose, onSave }
                         ? 'bg-secondary text-muted-foreground hover:bg-secondary/80'
                         : 'bg-primary text-primary-foreground hover:bg-primary/90'
                     }`}
-                    title={allVisibleAssigned ? 'Unassign all visible' : 'Assign all visible'}
+                    title={allVisibleAssigned ? 'Hapus semua yang terlihat' : 'Tugaskan semua yang terlihat'}
                   >
                     {allVisibleAssigned ? <Square className="w-4 h-4" /> : <CheckSquare className="w-4 h-4" />}
-                    {allVisibleAssigned ? 'Unassign all' : 'Assign all'}
+                    {allVisibleAssigned ? 'Hapus Semua' : 'Tugaskan Semua'}
                   </button>
                   <button
                     type="button"
@@ -513,10 +513,10 @@ function StudentAdminModal({ student, masterGoals, categories, onClose, onSave }
                         ? 'bg-secondary text-muted-foreground hover:bg-secondary/80'
                         : 'bg-[var(--accent)] text-[var(--accent-foreground)] hover:brightness-95'
                     }`}
-                    title={allVisibleCompleted ? 'Unmark all completed' : 'Mark all completed'}
+                    title={allVisibleCompleted ? 'Batalkan Selesai' : 'Tandai Selesai'}
                   >
                     <CheckCircle2 className="w-4 h-4" />
-                    {allVisibleCompleted ? 'Unmark all' : 'Mark all done'}
+                    {allVisibleCompleted ? 'Batalkan Selesai Semua' : 'Tandai Semua Selesai'}
                   </button>
                 </div>
               </div>
@@ -528,7 +528,7 @@ function StudentAdminModal({ student, masterGoals, categories, onClose, onSave }
                 const completed = isCompleted(mg.id);
                 
                 return (
-                  <div key={mg.id || `mg-display-${index}`} className={`p-4 rounded-xl border transition-all ${
+                  <div key={`${mg.id}-${index}`} className={`p-4 rounded-xl border transition-all ${
                     assigned 
                       ? completed ? 'border-[var(--accent)] bg-[var(--accent)]/10' : 'border-primary bg-primary/10' 
                       : 'border-transparent bg-card hover:border-border shadow-soft'
@@ -567,9 +567,9 @@ function StudentAdminModal({ student, masterGoals, categories, onClose, onSave }
         </div>
         
         <div className="p-6 border-t border-border bg-secondary/30 flex justify-end gap-4">
-          <Button variant="ghost" onClick={onClose} className="rounded-xl font-bold h-12">Cancel</Button>
+          <Button variant="ghost" onClick={onClose} className="rounded-xl font-bold h-12">Batal</Button>
           <Button onClick={() => onSave(formData)} className="rounded-xl font-bold h-12 shadow-primary-glow">
-            Confirm Changes
+            Konfirmasi Perubahan
           </Button>
         </div>
 
@@ -613,7 +613,7 @@ function StudentAdminModal({ student, masterGoals, categories, onClose, onSave }
                   }} 
                   className="rounded-xl font-bold"
                 >
-                  Cancel
+                  Batal
                 </Button>
                 <Button 
                   onClick={confirmCrop} 

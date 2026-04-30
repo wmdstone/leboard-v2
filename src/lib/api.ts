@@ -13,6 +13,7 @@ export const getLocalToken = () => {
 export const setLocalToken = (token: string) => {
   try {
     localStorage.setItem('admin_token', token);
+    document.cookie = `admin_token=${token}; path=/; max-age=86400; SameSite=None; Secure`;
   } catch (e) {
     console.warn("localStorage is disabled, storing token in memory:", e);
     window.__inMemoryToken = token;
@@ -22,6 +23,7 @@ export const setLocalToken = (token: string) => {
 export const removeLocalToken = () => {
   try {
     localStorage.removeItem('admin_token');
+    document.cookie = 'admin_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure';
   } catch (e) {
     window.__inMemoryToken = null;
   }
@@ -34,15 +36,13 @@ declare global {
 }
 
 export const apiFetch = async (url: string, options: RequestInit = {}) => {
+  console.log(`[SSR DEBUG] apiFetch called for ${url}`);
   const token = getLocalToken();
   const headers = new Headers(options.headers || {});
   if (token) {
     headers.set('Authorization', `Bearer ${token}`);
   }
 
-  // Wrap every call in a per-request AbortController so a single hung backend
-  // request can never block the entire UI loader forever. 20s is generous
-  // for Supabase under load but short enough to surface real failures.
   const isWrite = (options.method || 'GET').toUpperCase() !== 'GET';
   const TIMEOUT_MS = isWrite ? 30000 : 20000;
   const userSignal = (options as any).signal as AbortSignal | undefined;
@@ -53,17 +53,19 @@ export const apiFetch = async (url: string, options: RequestInit = {}) => {
     else userSignal.addEventListener('abort', () => ctl.abort(), { once: true });
   }
 
-  const doFetch = () =>
-    url.startsWith('/api/')
+  const doFetch = () => {
+    console.log(`[apiFetch] Calling ${url}`);
+    return url.startsWith('/api/')
       ? firebaseApiFetch(url, { ...options, headers, signal: ctl.signal })
       : fetch(url, { ...options, headers, credentials: 'same-origin', cache: 'no-store', signal: ctl.signal });
+  };
 
   try {
     let res: Response;
     try {
       res = await doFetch();
     } catch (err: any) {
-      // One quick retry on transient network blips for idempotent reads only.
+      console.warn(`[apiFetch] First attempt for ${url} failed:`, err);
       if (!isWrite && err?.name !== 'AbortError') {
         await new Promise((r) => setTimeout(r, 300));
         res = await doFetch();
@@ -75,6 +77,7 @@ export const apiFetch = async (url: string, options: RequestInit = {}) => {
       removeLocalToken();
       window.dispatchEvent(new Event('auth-expired'));
     }
+    console.log(`[apiFetch] Finished ${url} with status ${res.status}`);
     return res;
   } finally {
     clearTimeout(timer);
@@ -82,17 +85,20 @@ export const apiFetch = async (url: string, options: RequestInit = {}) => {
 };
 
 export const fetchAppData = async () => {
+  console.log("[fetchAppData] Starting fetches...");
   const [catsRes, goalsRes, studentsRes, settingsRes] = await Promise.all([
-    apiFetch('/api/categories'),
-    apiFetch('/api/masterGoals'),
-    apiFetch('/api/students'),
-    apiFetch('/api/settings'),
+    apiFetch('/api/categories').catch(e => { console.error("CATS ERR", e); return { ok: false }; }),
+    apiFetch('/api/masterGoals').catch(e => { console.error("GOALS ERR", e); return { ok: false }; }),
+    apiFetch('/api/students').catch(e => { console.error("STUDENTS ERR", e); return { ok: false }; }),
+    apiFetch('/api/settings').catch(e => { console.error("SETTINGS ERR", e); return { ok: false }; }),
   ]);
+  
+  console.log("[fetchAppData] Fetches completed.");
 
-  const cats = catsRes.ok ? await catsRes.json() : [];
-  const goals = goalsRes.ok ? await goalsRes.json() : [];
-  const stus = studentsRes.ok ? await studentsRes.json() : [];
-  let sets = settingsRes.ok ? await settingsRes.json() : {};
+  const cats = catsRes.ok ? await (catsRes as Response).json() : [];
+  const goals = goalsRes.ok ? await (goalsRes as Response).json() : [];
+  const stus = studentsRes.ok ? await (studentsRes as Response).json() : [];
+  let sets = settingsRes.ok ? await (settingsRes as Response).json() : {};
 
   if (!sets || Object.keys(sets).length === 0 || !sets.primaryColor) {
     sets = {

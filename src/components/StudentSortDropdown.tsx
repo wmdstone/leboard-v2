@@ -12,10 +12,10 @@ export interface SortOption {
 }
 
 export const DEFAULT_SORT_OPTIONS: SortOption[] = [
-  { value: 'points', label: 'Points (high → low)', direction: 'desc' },
-  { value: 'name', label: 'Name (A → Z)', direction: 'asc' },
-  { value: 'newest', label: 'Newest first', direction: 'desc' },
-  { value: 'oldest', label: 'Oldest first', direction: 'asc' },
+  { value: 'points', label: 'Poin (tinggi → rendah)', direction: 'desc' },
+  { value: 'name', label: 'Nama (A → Z)', direction: 'asc' },
+  { value: 'newest', label: 'Terbaru', direction: 'desc' },
+  { value: 'oldest', label: 'Terlama', direction: 'asc' },
 ];
 
 interface Props {
@@ -62,13 +62,13 @@ export function StudentSortDropdown({
         }`}
       >
         <ArrowDownUp className="h-4 w-4" />
-        <span>Sort</span>
+        <span>Urutkan</span>
         <DirIcon className="h-4 w-4" />
       </Button>
       {open && (
         <div className="absolute left-0 mt-2 w-48 sm:w-56 bg-card border-none rounded-2xl shadow-soft z-50 p-1.5 sm:p-2 animate-in fade-in zoom-in-95 duration-200">
           <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 px-3 pt-1 pb-2">
-            Sort by
+            Urutkan berdasarkan
           </div>
           {options.map((opt) => {
             const active = opt.value === value;

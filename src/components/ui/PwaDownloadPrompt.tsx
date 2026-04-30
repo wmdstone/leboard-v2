@@ -34,13 +34,21 @@ export function PwaDownloadPrompt() {
       return true;
     };
 
-    const handleBeforeInstallPrompt = (e: any) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
+    const handleBeforeInstallPrompt = (e?: any) => {
+      // Prioritize window.__DEFERRED_PROMPT__ as it should be the actual BeforeInstallPromptEvent
+      const promptEvent = (window as any).__DEFERRED_PROMPT__ || e;
+      if (promptEvent && typeof promptEvent.prompt === 'function') {
+        setDeferredPrompt(promptEvent);
+      }
+      
+      // Always show prompt for now if criteria met, so iOS users can get instructions!
       if (checkDismissal()) {
         setShowPrompt(true);
       }
     };
+
+    // Check immediately in case it already fired
+    handleBeforeInstallPrompt();
 
     // B. The appinstalled Event Listener
     const handleAppInstalled = () => {
@@ -49,43 +57,45 @@ export function PwaDownloadPrompt() {
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('app-beforeinstallprompt', handleBeforeInstallPrompt);
     window.addEventListener('appinstalled', handleAppInstalled);
-
-    // Development/Preview Fallback: show prompt after 3s if not installed and not dismissed
-    let timer: any;
-    if (checkDismissal()) {
-      timer = setTimeout(() => {
-        if (!deferredPrompt) {
-          setShowPrompt(true);
-        }
-      }, 3000);
-    }
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener('app-beforeinstallprompt', handleBeforeInstallPrompt);
       window.removeEventListener('appinstalled', handleAppInstalled);
-      if (timer) clearTimeout(timer);
     };
-  }, [deferredPrompt]);
+  }, []); // Remove deferredPrompt from dependency array so it doesn't re-run and mess up listeners
 
   if (isStandaloneMode) {
     return null;
   }
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) {
-      alert("Pemasangan aplikasi ditangani secara otomatis oleh browser. Jika Anda tidak melihat prompt, coba gunakan opsi 'Tambahkan ke Layar Utama' atau 'Instal Aplikasi' di browser Anda.");
+    const promptEvent = deferredPrompt || (window as any).__DEFERRED_PROMPT__;
+    
+    if (!promptEvent || typeof promptEvent.prompt !== 'function') {
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+      const instruction = isIOS 
+        ? "Untuk pengguna iOS/iPhone:\n1. Ketuk ikon 'Bagikan' (Share) di bawah layar.\n2. Pilih 'Tambahkan ke Layar Utama' (Add to Home Screen)."
+        : "Browser Anda tidak mendukung instalasi otomatis.\nSilakan tekan menu browser (titik tiga) dan pilih 'Instal Aplikasi' atau 'Tambahkan ke Layar Utama'.";
+      
+      alert(instruction);
       setShowPrompt(false);
       return;
     }
+
     try {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      console.log(`User response to the install prompt: ${outcome}`);
-      if (outcome === 'accepted') {
-         localStorage.setItem('isPwaInstalled', 'true');
+      if (promptEvent.prompt) {
+        promptEvent.prompt();
+        const { outcome } = await promptEvent.userChoice;
+        console.log(`User response to the install prompt: ${outcome}`);
+        if (outcome === 'accepted') {
+           localStorage.setItem('isPwaInstalled', 'true');
+        }
       }
       setDeferredPrompt(null);
+      (window as any).__DEFERRED_PROMPT__ = null;
       setShowPrompt(false);
     } catch (e) {
       console.error("Prompt failed", e);

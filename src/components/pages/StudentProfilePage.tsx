@@ -153,7 +153,7 @@ function StudentProfilePage({ studentId, students, masterGoals, categories, calc
     return data;
   }, [student?.assignedGoals, masterGoals, historyFilterValue]);
 
-  if (!student) return <div className="text-center py-20 font-bold text-muted-foreground underline cursor-pointer" onClick={() => navigateTo('/')}>Go Back Home</div>;
+  if (!student) return <div className="text-center py-20 font-bold text-muted-foreground underline cursor-pointer" onClick={() => navigateTo('/')}>Kembali ke Beranda</div>;
 
   const totalPoints = calculateTotalPoints(student.assignedGoals);
   const rankedStudents = [...students].map(s => ({...s, totalPts: calculateTotalPoints(s.assignedGoals || [])})).sort((a,b) => b.totalPts - a.totalPts);
@@ -181,7 +181,7 @@ function StudentProfilePage({ studentId, students, masterGoals, categories, calc
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <Button variant="ghost" onClick={() => navigateTo('/')} className="hover:text-primary transition-colors font-bold text-xs uppercase tracking-[0.2em] mb-2 -ml-2">
-        <ArrowLeft className="h-4 w-4 mr-2" /> Return to Board
+        <ArrowLeft className="h-4 w-4 mr-2" /> Kembali
       </Button>
 
       <div className="bg-card rounded-xl p-4 sm:p-8 shadow-soft border-none relative overflow-hidden group">
@@ -200,7 +200,7 @@ function StudentProfilePage({ studentId, students, masterGoals, categories, calc
           <div className="flex gap-4 mt-8 w-full">
             <Card className="flex-1 bg-secondary/20 shadow-none border-border">
               <CardContent className="p-4 flex flex-col justify-center items-center">
-                <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Rank</div>
+                <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-1">Peringkat</div>
                 <div className="flex items-center justify-center gap-3">
                   <div className="text-2xl font-black text-foreground">#{currentRank}</div>
                   <RankMovement currentRank={currentRank} previousRank={student.previousRank} />
@@ -218,56 +218,55 @@ function StudentProfilePage({ studentId, students, masterGoals, categories, calc
       </div>
 
       {historicalData.length > 0 && (
-        <Card className="rounded-xl shadow-soft border-border overflow-hidden">
-          <CardHeader className="p-6 border-b border-border flex flex-row justify-between items-center gap-4 flex-wrap space-y-0">
+        <Card className="rounded-xl shadow-soft border-border overflow-visible relative z-30">
+          <CardHeader className="p-6 border-b border-border flex flex-col items-start gap-3 space-y-0 relative z-30">
             <h4 className="font-bold text-foreground flex items-center gap-2">
-              <Target className="w-5 h-5 text-primary" /> Progression History
+              <Target className="w-5 h-5 text-primary" /> Riwayat Perkembangan
             </h4>
-            <TimeRangeFilter value={historyFilterValue} onChange={setHistoryFilterValue} />
+            <div className="w-full sm:w-auto">
+              <TimeRangeFilter value={historyFilterValue} onChange={setHistoryFilterValue} />
+            </div>
           </CardHeader>
           <CardContent className="p-6">
             <div className="h-48 w-full min-w-0" style={{ minHeight: "192px" }}>
               <ChartContainer config={{ points: { label: "Points", color: "hsl(var(--primary))" } }} className="h-full w-full">
-                <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={historicalData}>
                     <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={10} tickLine={false} axisLine={false} />
                     <YAxis stroke="hsl(var(--muted-foreground))" fontSize={10} tickLine={false} axisLine={false} width={30} tickFormatter={value => value >= 1000 ? `${(value/1000).toFixed(1)}k` : value} />
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Line type="monotone" dataKey="points" stroke="var(--color-points)" strokeWidth={3} dot={{ r: 4, strokeWidth: 2, fill: "var(--color-points)" }} activeDot={{ r: 6, strokeWidth: 0 }} />
                   </LineChart>
-                </ResponsiveContainer>
               </ChartContainer>
             </div>
           </CardContent>
         </Card>
       )}
 
-      <Card className="rounded-xl shadow-soft border-border overflow-hidden mb-6">
-        <CardHeader className="p-6 border-b border-border flex flex-row justify-between items-center gap-4 flex-wrap space-y-0">
-          <div>
+      <Card className="rounded-xl shadow-soft border-border overflow-visible mb-6 relative z-20">
+        <CardHeader className="p-6 border-b border-border flex flex-col items-start gap-4 space-y-0 relative z-20 w-full">
+          <div className="w-full">
             <h4 className="font-bold text-foreground flex items-center gap-2 mb-2">
-              <CheckSquare className="w-5 h-5 text-primary" /> Activity Timeline
+              <CheckSquare className="w-5 h-5 text-primary" /> Lini Masa Aktivitas
             </h4>
-            <p className="text-xs text-muted-foreground">
-              Daily completed goals.
+            <p className="text-xs text-muted-foreground mb-4">
+              Tujuan harian yang diselesaikan.
             </p>
-          </div>
-          <div className="flex items-center gap-3 flex-wrap">
             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
               <Badge variant="secondary" className="px-2 py-1 rounded-lg">
-                {timelineData.totalGoals} goals
+                {timelineData.totalGoals} tujuan
               </Badge>
               <Badge variant="secondary" className="px-2 py-1 rounded-lg">
-                {timelineData.totalPoints} pts
+                {timelineData.totalPoints} poin
               </Badge>
             </div>
+          </div>
+          <div className="w-full sm:w-auto">
             <TimeRangeFilter value={timelineFilterValue} onChange={setTimelineFilterValue} />
           </div>
         </CardHeader>
         <CardContent className="p-6">
           <div className="h-48 w-full min-w-0" style={{ minHeight: "192px" }}>
             <ChartContainer config={{ goals: { label: "Goals", color: "hsl(var(--primary))" } }} className="h-full w-full">
-              <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={timelineData.rows}>
                   <XAxis
                     dataKey="date"
@@ -288,7 +287,6 @@ function StudentProfilePage({ studentId, students, masterGoals, categories, calc
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar dataKey="goals" fill="var(--color-goals)" radius={[4, 4, 0, 0]} />
                 </BarChart>
-              </ResponsiveContainer>
             </ChartContainer>
           </div>
         </CardContent>
@@ -296,7 +294,7 @@ function StudentProfilePage({ studentId, students, masterGoals, categories, calc
 
       <div className="space-y-4">
         <h2 className="text-xl font-black text-foreground flex items-center gap-2 px-2">
-          <Target className="w-6 h-6 text-primary" /> Assignment Board
+          <Target className="w-6 h-6 text-primary" /> Papan Tugas
         </h2>
         
         {Object.keys(groupedGoals).length === 0 ? (
@@ -304,8 +302,8 @@ function StudentProfilePage({ studentId, students, masterGoals, categories, calc
             <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Target className="w-8 h-8 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-bold text-foreground mb-2">No Goals Yet</h3>
-            <p className="text-muted-foreground text-sm max-w-sm mx-auto">This student hasn't been assigned any learning goals. Head to the Admin panel to assign their first track.</p>
+            <h3 className="text-lg font-bold text-foreground mb-2">Belum Ada Tugas</h3>
+            <p className="text-muted-foreground text-sm max-w-sm mx-auto">Siswa ini belum diberi tugas belajar apa pun. Buka Panel Admin untuk memberikan tugas pertama mereka.</p>
           </Card>
         ) : (
           Object.entries(groupedGoals).map(([catId, goals]) => {
@@ -353,8 +351,8 @@ function StudentProfilePage({ studentId, students, masterGoals, categories, calc
                       className="overflow-hidden bg-background border-t border-border"
                     >
                       <div className="p-4 space-y-3">
-                        {goals.map(goal => (
-                          <div key={goal.id} className="flex items-center gap-4 bg-card p-4 rounded-2xl border-none shadow-soft transition-all relative overflow-hidden">
+                        {goals.map((goal, idx) => (
+                          <div key={`${goal.id}-${idx}`} className="flex items-center gap-4 bg-card p-4 rounded-2xl border-none shadow-soft transition-all relative overflow-hidden">
                             {/* Accent line for completed goals */}
                             {goal.completed && <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />}
                             

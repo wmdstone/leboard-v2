@@ -273,19 +273,19 @@ function LeaderboardPage({ students, masterGoals, calculateTotalPoints, navigate
             onSortChange={setSortKey}
             availableTags={availableTags}
             studentTagSource={studentTagSource}
-            placeholder="Search rank 4 and below..."
+            placeholder="Cari peringkat 4 dan ke bawah..."
           />
         </div>
         <div className="px-0">
           {isLoading ? (
             <div className="p-20 flex flex-col items-center gap-4 bg-card rounded-xl border-none shadow-inner">
               <Loader2 className="w-8 h-8 text-primary animate-spin" />
-              <p className="text-muted-foreground text-sm font-medium">Fetching leaderboard data...</p>
+              <p className="text-muted-foreground text-sm font-medium">Mengambil data papan peringkat...</p>
             </div>
           ) : restOfStudents.length === 0 ? (
             <div className="p-12 text-center text-muted-foreground bg-card rounded-xl border-none shadow-inner">
               <p className="font-bold">
-                {hasActiveFilter ? 'No students match your search or tag filter.' : 'No other students found.'}
+                {hasActiveFilter ? 'Tidak ada siswa yang sesuai dengan filter pencarian atau tag.' : 'Tidak ada siswa lain yang ditemukan.'}
               </p>
             </div>
           ) : (
@@ -295,7 +295,7 @@ function LeaderboardPage({ students, masterGoals, calculateTotalPoints, navigate
                   
                   return (
                     <Card
-                      key={student.id || `leader-${index}`} 
+                      key={`leader-${student.id}-${index}`} 
                       onClick={() => {
                         trackEvent('profile_open', { refId: student.id, metadata: { source: 'leaderboard' } });
                         navigateTo('/student', { id: student.id });
@@ -348,7 +348,7 @@ function LeaderboardPage({ students, masterGoals, calculateTotalPoints, navigate
                         <div className="flex items-center gap-3 md:gap-4 text-right shrink-0">
                           <div className="flex flex-col items-end justify-center">
                             <div className="text-xl md:text-3xl font-black text-foreground group-hover:text-primary transition-colors">{student.totalPoints}</div>
-                            <div className="text-[10px] md:text-xs font-bold text-muted-foreground uppercase tracking-widest leading-none mt-1">Points</div>
+                            <div className="text-[10px] md:text-xs font-bold text-muted-foreground uppercase tracking-widest leading-none mt-1">Poin</div>
                           </div>
                           <div className="hidden sm:flex items-center justify-center w-12 md:w-16">
                             <RankMovement currentRank={rank} previousRank={student.previousRank} />

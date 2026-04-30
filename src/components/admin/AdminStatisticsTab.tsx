@@ -48,40 +48,38 @@ export function AdminStatisticsTab() {
     <div className='p-4 sm:p-8 space-y-8'>
       <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4'>
         <div>
-          <h3 className='text-2xl font-black text-foreground'>Analytics & Usage</h3>
-          <p className='text-muted-foreground text-sm mt-1'>Platform events and metrics.</p>
+          <h3 className='text-2xl font-black text-foreground'>Analitik & Penggunaan</h3>
+          <p className='text-muted-foreground text-sm mt-1'>Acara platform dan metrik.</p>
         </div>
         <TimeRangeFilter value={filter} onChange={setFilter} />
       </div>
 
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'>
-        <StatCard title='Users' value={data?.stats?.totalUsers || 0} icon={Users} color='text-blue-500' />
-        <StatCard title='Events' value={data?.stats?.totalEvents || events?.length || 0} icon={Activity} color='text-emerald-500' />
+        <StatCard title='Pengguna' value={data?.stats?.totalUsers || 0} icon={Users} color='text-blue-500' />
+        <StatCard title='Acara' value={data?.stats?.totalEvents || events?.length || 0} icon={Activity} color='text-emerald-500' />
         {/* Placeholder cards for structural balance */}
-        <StatCard title='Active Goals' value={data?.stats?.activeGoals || 0} icon={Target} color='text-orange-500' />
-        <StatCard title='Completion' value={`${data?.stats?.completionRate || 0}%`} icon={Zap} color='text-purple-500' />
+        <StatCard title='Tujuan Aktif' value={data?.stats?.activeGoals || 0} icon={Target} color='text-orange-500' />
+        <StatCard title='Penyelesaian' value={`${data?.stats?.completionRate || 0}%`} icon={Zap} color='text-purple-500' />
       </div>
 
       <Card className="rounded-xl shadow-soft border-border overflow-hidden">
         <CardHeader className="p-6 border-b border-border">
-          <h4 className="font-bold text-foreground">Event Timeline</h4>
+          <h4 className="font-bold text-foreground">Lini Masa Acara</h4>
         </CardHeader>
         <CardContent className="p-6">
           <div className="h-64 w-full">
             {chartData.length > 0 ? (
               <ChartContainer config={{ events: { label: "Events", color: "hsl(var(--primary))" } }} className="h-full w-full">
-                <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData}>
                     <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
                     <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} width={40} allowDecimals={false} />
                     <ChartTooltip content={<ChartTooltipContent />} />
                     <Bar dataKey="events" fill="var(--color-events)" radius={[4, 4, 0, 0]} />
                   </BarChart>
-                </ResponsiveContainer>
               </ChartContainer>
             ) : (
               <div className="flex h-full items-center justify-center text-muted-foreground">
-                No event data available for this range.
+                Tidak ada data acara yang tersedia untuk rentang ini.
               </div>
             )}
           </div>

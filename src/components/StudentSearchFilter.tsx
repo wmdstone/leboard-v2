@@ -28,7 +28,7 @@ export function StudentSearchFilter({
   value,
   onChange,
   availableTags,
-  placeholder = 'Search by name...',
+  placeholder = 'Cari berdasarkan nama...',
   className = '',
   variant = 'light',
   studentTagSource,
@@ -148,7 +148,7 @@ export function StudentSearchFilter({
               <Command>
                 <div className="flex items-center justify-between px-4 py-2 border-b border-border/40">
                   <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                    Filter by tags
+                    Filter dengan tag
                   </span>
                   {hasFilters && (
                     <button
@@ -156,19 +156,19 @@ export function StudentSearchFilter({
                       onClick={clearAll}
                       className="text-[10px] font-bold text-primary hover:underline"
                     >
-                      Clear all
+                      Hapus semua
                     </button>
                   )}
                 </div>
 
                 <CommandInput 
-                  placeholder="Type to find tags..." 
+                  placeholder="Ketik untuk mencari tag..." 
                   className="h-12 border-none focus:ring-0" 
                 />
 
                 <CommandList className="max-h-64">
                   <CommandEmpty className="py-6 text-center text-sm text-muted-foreground">
-                    No tags found.
+                    Tag tidak ditemukan.
                   </CommandEmpty>
 
                   {!localQuery && quickChips.length > 0 && (
@@ -176,7 +176,7 @@ export function StudentSearchFilter({
                       <div className="flex items-center gap-1.5 mb-1 px-1">
                         <Sparkles className="h-3 w-3 text-primary" />
                         <span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">
-                          Quick select
+                          Pilih cepat
                         </span>
                       </div>
                     }>

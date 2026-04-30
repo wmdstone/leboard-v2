@@ -27,7 +27,7 @@ export function StudentSearchAdvanced({
   onSortChange,
   availableTags,
   studentTagSource,
-  placeholder = 'Search by name...',
+  placeholder = 'Cari berdasarkan nama...',
   variant = 'light',
   className = '',
 }: Props) {
@@ -94,7 +94,7 @@ export function StudentSearchAdvanced({
             onClick={() => onChange({ ...value, tags: [] })}
             className="text-[10px] font-bold text-muted-foreground hover:text-primary transition-colors px-1 ml-1"
           >
-            Clear all
+            Hapus semua
           </button>
         </div>
       )}

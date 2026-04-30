@@ -314,7 +314,7 @@ export function AdminImportExportTab({ apiFetch, students, masterGoals, categori
       <section className="space-y-4">
         <div className="flex items-center gap-2">
           <Download className="w-5 h-5 text-primary" />
-          <h4 className="text-lg font-black text-foreground">Export Data</h4>
+          <h4 className="text-lg font-black text-foreground">Ekspor Data</h4>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -322,7 +322,7 @@ export function AdminImportExportTab({ apiFetch, students, masterGoals, categori
           <ExportCard icon={Database} title="Tracks & Goals" subtitle="All master goals with points & category" dataKey="goals" count={masterGoals?.length} />
           <ExportCard icon={Database} title="Categories" subtitle="Goal category list" dataKey="categories" count={categories?.length} />
           <ExportCard icon={FileText} title="Assigned Tracks (long form)" subtitle="One row per student × goal, with completion" dataKey="tracks_full" />
-          <ExportCard icon={FileText} title="Activity Logs" subtitle="Recent admin & education activity" dataKey="logs" />
+          <ExportCard icon={FileText} title="Log Aktivitas" subtitle="Aktivitas admin & pendidikan terbaru" dataKey="logs" />
         </div>
 
         {/* Stats export */}
@@ -377,7 +377,7 @@ export function AdminImportExportTab({ apiFetch, students, masterGoals, categori
       <section className="space-y-4">
         <div className="flex items-center gap-2">
           <Upload className="w-5 h-5 text-primary" />
-          <h4 className="text-lg font-black text-foreground">Import Data</h4>
+          <h4 className="text-lg font-black text-foreground">Impor Data</h4>
         </div>
 
         <div className="bg-background border border-border rounded-2xl p-4 sm:p-5 space-y-4">

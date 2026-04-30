@@ -82,7 +82,7 @@ export function TimeRangeFilter({ value, onChange, size = 'sm', className = '' }
   const customLabel =
     value.range.start && value.range.end
       ? `${toDateInputValue(value.range.start)} → ${toDateInputValue(value.range.end)}`
-      : 'Pick range';
+      : 'Pilih rentang';
       
   const activePresetInfo = RANGE_PRESET_OPTIONS.find(o => o.value === value.preset);
 
@@ -96,13 +96,13 @@ export function TimeRangeFilter({ value, onChange, size = 'sm', className = '' }
             className={`w-full bg-background hover:bg-secondary/50 border-border font-bold text-muted-foreground hover:text-foreground shadow-soft justify-between gap-2 border-none active:scale-95 transition-all ${sizeCls}`}
         >
             <CalendarIcon className="h-4 w-4 shrink-0 opacity-70 hidden sm:block" />
-            <span className="truncate flex-1 text-left sm:text-center">{activePresetInfo?.label || "Select range"}</span>
+            <span className="truncate flex-1 text-left sm:text-center">{activePresetInfo?.label || "Pilih rentang"}</span>
             <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
         </Button>
         {presetOpen && (
-            <div className="absolute top-full left-0 mt-2 w-full min-w-[180px] bg-card border-none rounded-2xl shadow-soft z-[100] p-1.5 sm:p-2 animate-in fade-in zoom-in-95 duration-200">
+            <div className="absolute top-full left-0 mt-2 min-w-[200px] sm:min-w-[180px] w-[calc(100vw-3rem)] sm:w-auto max-w-[300px] bg-card border border-border rounded-2xl shadow-lg z-[100] p-1.5 sm:p-2 animate-in fade-in zoom-in-95 duration-200">
                  <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 px-3 pt-1 pb-2">
-                   Time Range
+                   Rentang Waktu
                  </div>
                 {RANGE_PRESET_OPTIONS.map((o) => {
                     const active = value.preset === o.value;
@@ -145,10 +145,10 @@ export function TimeRangeFilter({ value, onChange, size = 'sm', className = '' }
           </Button>
 
           {pickerOpen && (
-             <div className="absolute top-full right-0 mt-2 w-[280px] bg-card p-4 rounded-2xl shadow-soft border-none z-[100] animate-in fade-in zoom-in-95 duration-200">
+             <div className="absolute top-full left-0 sm:right-0 sm:left-auto mt-2 w-[calc(100vw-3rem)] sm:w-[280px] max-w-[300px] bg-card p-4 rounded-2xl shadow-soft border border-border z-[100] animate-in fade-in zoom-in-95 duration-200">
                 <div className="space-y-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Start date</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Tanggal mulai</label>
                     <Input
                       type="date"
                       value={toDateInputValue(value.range.start)}
@@ -158,7 +158,7 @@ export function TimeRangeFilter({ value, onChange, size = 'sm', className = '' }
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">End date</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Tanggal akhir</label>
                     <Input
                       type="date"
                       value={toDateInputValue(value.range.end)}

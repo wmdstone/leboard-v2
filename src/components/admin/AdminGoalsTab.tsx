@@ -83,7 +83,7 @@ export function AdminGoalsTab({ masterGoals, refreshData, categories }: any) {
     categories.forEach((c: any) => {
       groups[c.id] = { category: c, goals: [] };
     });
-    groups[unknownCatId] = { category: { id: unknownCatId, name: 'Unknown Category', isSystem: true }, goals: [] };
+    groups[unknownCatId] = { category: { id: unknownCatId, name: 'Kategori Tidak Diketahui', isSystem: true }, goals: [] };
 
     masterGoals.forEach((g: any) => {
       if (g.categoryId && groups[g.categoryId]) {
@@ -100,8 +100,8 @@ export function AdminGoalsTab({ masterGoals, refreshData, categories }: any) {
     <div className="p-4 sm:p-8">
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-8">
         <div>
-          <h3 className="text-2xl font-black text-foreground underline decoration-primary decoration-4 underline-offset-8">Tracks & Goals</h3>
-          <p className="text-muted-foreground text-sm mt-3">Manage categories and their goal templates.</p>
+          <h3 className="text-2xl font-black text-foreground underline decoration-primary decoration-4 underline-offset-8">Jalur & Tujuan</h3>
+          <p className="text-muted-foreground text-sm mt-3">Kelola kategori dan template tujuannya.</p>
         </div>
         <div className="flex flex-wrap gap-3 w-full sm:w-auto">
           <form 
@@ -110,32 +110,32 @@ export function AdminGoalsTab({ masterGoals, refreshData, categories }: any) {
           >
             <Input 
               type="text" 
-              placeholder="New Track Name" 
+              placeholder="Nama Jalur Baru" 
               value={newCatName} 
               onChange={e => setNewCatName(e.target.value)}
               className="h-12 rounded-xl border-border bg-card shadow-soft w-full sm:w-48 font-bold"
             />
             <Button type="submit" className="h-12 w-full sm:w-auto rounded-xl shadow-primary-glow font-bold">
               <Plus className="h-4 w-4 mr-2" />
-              Add Track
+              Tambah Jalur
             </Button>
           </form>
           <Button 
             onClick={() => { setEditGoalData(null); setGoalModalOpen(true); }} 
             className="h-12 w-full sm:w-auto rounded-xl shadow-primary-glow font-bold"
           >
-            <Target className="h-4 w-4 mr-2" /> New Goal
+            <Target className="h-4 w-4 mr-2" /> Tujuan Baru
           </Button>
         </div>
       </div>
 
       <div className="space-y-4">
-        {groupedGoals.map((group) => {
+        {groupedGoals.map((group, groupIndex) => {
           const isExpanded = expandedCats[group.category.id] !== false; // Default expanded
           const isSystem = group.category.isSystem;
           
           return (
-            <Card key={group.category.id} className="rounded-xl shadow-soft border-border overflow-hidden">
+            <Card key={`${group.category.id}-${groupIndex}`} className="rounded-xl shadow-soft border-border overflow-hidden">
               <CardHeader 
                 className={`p-4 cursor-pointer hover:bg-secondary/20 transition-colors flex flex-row items-center justify-between space-y-0`}
                 onClick={() => toggleCat(group.category.id)}
@@ -151,7 +151,7 @@ export function AdminGoalsTab({ masterGoals, refreshData, categories }: any) {
                         className="bg-background rounded-xl font-bold h-10 w-full sm:w-64"
                       />
                       <Button onClick={updateCategory} className="rounded-xl h-10">Save</Button>
-                      <Button variant="ghost" onClick={() => setEditCatData(null)} className="rounded-xl h-10">Cancel</Button>
+                      <Button variant="ghost" onClick={() => setEditCatData(null)} className="rounded-xl h-10">Batal</Button>
                     </div>
                   ) : (
                     <div className="flex flex-col gap-1 items-start ml-2">
@@ -196,11 +196,11 @@ export function AdminGoalsTab({ masterGoals, refreshData, categories }: any) {
                   >
                     <CardContent className="p-4 pt-0 border-t border-border/40 bg-card rounded-b-[1.5rem]">
                       {group.goals.length === 0 ? (
-                        <p className="text-sm font-medium text-muted-foreground text-center py-8">No goals in this track.</p>
+                        <p className="text-sm font-medium text-muted-foreground text-center py-8">Tidak ada tujuan di jalur ini.</p>
                       ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                          {group.goals.map((mg: any) => (
-                            <Card key={mg.id} className="rounded-xl border border-border shadow-none hover:shadow-soft transition-shadow group relative flex flex-col justify-between">
+                          {group.goals.map((mg: any, mgIndex: number) => (
+                            <Card key={`${mg.id}-${mgIndex}`} className="rounded-xl border border-border shadow-none hover:shadow-soft transition-shadow group relative flex flex-col justify-between">
                               <CardContent className="p-4 space-y-2">
                                 <div className="flex justify-between items-start gap-2">
                                   <h4 className="font-bold text-foreground leading-tight flex-1 pt-1" title={mg.title}>{mg.title}</h4>
@@ -246,14 +246,14 @@ export function AdminGoalsTab({ masterGoals, refreshData, categories }: any) {
       {goalModalOpen && <GoalAdminModal goal={editGoalData} categories={categories} onClose={() => setGoalModalOpen(false)} onSave={handleSaveGoal} />}
       
       <ConfirmModal 
-        isOpen={!!deleteGoalConfirm} title="Delete Master Goal"
-        message={`Are you sure you want to delete ${deleteGoalConfirm?.title}? Students will keep the reference but data won't sync.`}
+        isOpen={!!deleteGoalConfirm} title="Hapus Tujuan Utama"
+        message={`Apakah Anda yakin ingin menghapus ${deleteGoalConfirm?.title}? Siswa akan tetap menyimpan referensi ini tetapi datanya tidak akan disinkronkan.`}
         onConfirm={executeDeleteGoal} onCancel={() => setDeleteGoalConfirm(null)}
       />
 
       <ConfirmModal 
-        isOpen={!!deleteCatConfirm} title="Delete Track"
-        message={`Are you sure you want to delete ${deleteCatConfirm?.name}? Goals using this track will be moved to Unknown.`}
+        isOpen={!!deleteCatConfirm} title="Hapus Jalur"
+        message={`Are you sure you want to delete ${deleteCatConfirm?.name}? Tujuan yang menggunakan jalur ini akan dipindahkan ke Tidak Diketahui.`}
         onConfirm={executeDeleteCategory} onCancel={() => setDeleteCatConfirm(null)}
       />
     </div>
@@ -274,11 +274,11 @@ function GoalAdminModal({ goal, categories, onClose, onSave }: any) {
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[60] flex justify-center items-center p-4">
       <Card className="w-full max-w-md rounded-xl shadow-2xl border-border bg-card overflow-hidden">
         <CardHeader className="p-6 border-b border-border">
-          <div className="font-black text-lg text-foreground">{goal ? 'Edit Template' : 'New Template'}</div>
+          <div className="font-black text-lg text-foreground">{goal ? 'Edit Model' : 'Model Baru'}</div>
         </CardHeader>
         <CardContent className="p-8 space-y-6">
           <div>
-            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 block">Track Name</label>
+            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 block">Nama Jalur</label>
             <Input 
               type="text" 
               className="bg-secondary/30 h-12 border-border font-bold text-sm rounded-xl"
@@ -295,7 +295,7 @@ function GoalAdminModal({ goal, categories, onClose, onSave }: any) {
                 onValueChange={v => setFormData(p=>({...p, categoryId: v}))}
               >
                 <SelectTrigger className="bg-secondary/30 h-12 border-border font-bold text-sm rounded-xl w-full">
-                  <SelectValue placeholder="Select Category" />
+                  <SelectValue placeholder="Pilih Kategori" />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl shadow-soft border-border">
                   {categories.map((c: any) => (
@@ -307,7 +307,7 @@ function GoalAdminModal({ goal, categories, onClose, onSave }: any) {
               </Select>
             </div>
             <div className="w-24">
-              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 block">Points</label>
+              <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 block">Poin</label>
               <Input 
                 type="number" 
                 className="bg-secondary/30 h-12 border-border font-bold text-sm rounded-xl" 
@@ -318,7 +318,7 @@ function GoalAdminModal({ goal, categories, onClose, onSave }: any) {
             </div>
           </div>
           <div>
-            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 block">Description</label>
+            <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2 block">Deskripsi</label>
             <textarea 
               rows={3} 
               className="w-full bg-secondary/30 border border-border rounded-xl p-3 text-sm font-medium focus:ring-2 focus:ring-primary/50 outline-none text-foreground placeholder:text-muted-foreground resize-none" 
@@ -329,7 +329,7 @@ function GoalAdminModal({ goal, categories, onClose, onSave }: any) {
         </CardContent>
         <div className="p-6 border-t border-border bg-secondary/20 flex justify-end gap-3">
           <Button variant="ghost" onClick={onClose} className="rounded-xl h-12 font-bold">Cancel</Button>
-          <Button onClick={() => onSave(formData)} className="rounded-xl h-12 font-bold shadow-primary-glow">Save Template</Button>
+          <Button onClick={() => onSave(formData)} className="rounded-xl h-12 font-bold shadow-primary-glow">Simpan Model</Button>
         </div>
       </Card>
     </div>

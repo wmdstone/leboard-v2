@@ -32,8 +32,8 @@ export function AdminDashboard({ students, refreshData, masterGoals, categories,
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-black text-foreground">Admin Control</h1>
-          <p className="text-muted-foreground font-medium">Manage students, learning goals, and tracks.</p>
+          <h1 className="text-3xl font-black text-foreground">Kontrol Admin</h1>
+          <p className="text-muted-foreground font-medium">Kelola siswa, tujuan belajar, dan jalur.</p>
         </div>
                 <div className="flex items-center gap-2">
           <button 
@@ -46,7 +46,7 @@ export function AdminDashboard({ students, refreshData, masterGoals, categories,
             className="bg-card border border-border px-4 py-2 rounded-xl text-sm font-bold text-muted-foreground hover:bg-secondary flex items-center gap-2 active:scale-95 transition-all"
           >
             {isRefreshing ? <Loader2 className="w-4 h-4 animate-spin" /> : <MoreHorizontal className="w-4 h-4" />}
-            Force Sync
+            Sinkronisasi Paksa
           </button>
 
           <button 
@@ -58,8 +58,8 @@ export function AdminDashboard({ students, refreshData, masterGoals, categories,
               navigateTo('/');
             }}
             className="bg-card border border-red-200 px-4 py-2 rounded-xl text-sm font-bold text-red-500 hover:bg-red-50 flex items-center justify-center active:scale-95 transition-all md:hidden"
-            aria-label="Logout"
-            title="Logout"
+            aria-label="Keluar"
+            title="Keluar"
           >
             <LogOut className="w-4 h-4" />
           </button>
@@ -71,13 +71,13 @@ export function AdminDashboard({ students, refreshData, masterGoals, categories,
         <div className="sticky top-0 md:top-16 z-30 bg-card/95 backdrop-blur-sm rounded-2xl border border-border overflow-x-auto no-scrollbar scrollbar-hide snap-x px-2 py-1 shadow-soft">
           <div className="flex items-center gap-2 sm:gap-4 border-b border-border min-w-max px-4 sm:px-0">
             {[
-              { id: 'students', label: 'Students', icon: Users },
-              { id: 'goals', label: 'Tracks & Goals', icon: Target },
-              { id: 'appearance', label: 'Appearance', icon: Palette },
-              { id: 'statistics', label: 'Statistics', icon: Search },
-              { id: 'import-export', label: 'Import / Export', icon: Database },
+              { id: 'students', label: 'Siswa', icon: Users },
+              { id: 'goals', label: 'Jalur & Tujuan', icon: Target },
+              { id: 'appearance', label: 'Tampilan', icon: Palette },
+              { id: 'statistics', label: 'Statistik', icon: Search },
+              { id: 'import-export', label: 'Impor / Ekspor', icon: Database },
               { id: 'backend', label: 'Backend & DB', icon: Server },
-              { id: 'cache', label: 'PWA Management', icon: ShieldCheck }
+              { id: 'cache', label: 'Manajemen PWA', icon: ShieldCheck }
             ].map(tab => (
               <button
                 key={tab.id}
